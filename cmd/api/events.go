@@ -85,3 +85,15 @@ func (app *application) updateEvent(c *gin.Context) {
 
 	c.JSON(http.StatusOK, updateEvent)
 }
+func (app *application) deleteEvent(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid event ID"})
+		return
+	}
+	if err := app.models.Events.Delete(id); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete event"})
+		return
+	}
+	c.JSON(http.StatusNoContent, nil)
+}

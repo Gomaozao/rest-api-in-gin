@@ -21,3 +21,12 @@ func (app *application) createEvent(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, event)
 }
+
+func (app *application) getAllEvents(c *gin.Context) {
+	events, err := app.models.Events.GetAll()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve events"})
+		return
+	}
+	c.JSON(http.StatusOK, events)
+}
